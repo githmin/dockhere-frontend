@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const MainWrapper = styled.div`
@@ -60,17 +61,38 @@ const LoginBtn = styled.button`
     background-color: #403866;
   }
 `;
-// const MainWrapper = styled.div``;
 
-const Login = () => {
+const Login = (props) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navitage = useNavigate();
+  const instance = axios.create({
+    withCredentials: true,
+    baseURL: props.host,
+  });
+
+  const handelLogin = () => {
+    instance
+      .post("/api/auth", {
+        username: username,
+        password: password,
+      })
+      .then(() => navitage("/dashboard"));
+  };
   return (
     <div>
       <MainWrapper>
         <InnerWrapper>
           <Heading>LOGIN</Heading>
           <InputDiv>
-            <InputArea placeholder="Username"></InputArea>
-            <InputArea placeholder="Password"></InputArea>
+            <InputArea
+              placeholder="Username"
+              onChange={(e) => setUsername(e.target.value)}
+            ></InputArea>
+            <InputArea
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            ></InputArea>
           </InputDiv>
           <UnderTextArea>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -79,7 +101,7 @@ const Login = () => {
             </div>
             <Link to={"#"}>Forgot?</Link>
           </UnderTextArea>
-          <LoginBtn>LOGIN</LoginBtn>
+          <LoginBtn onClick={handelLogin}>LOGIN</LoginBtn>
         </InnerWrapper>
       </MainWrapper>
     </div>
