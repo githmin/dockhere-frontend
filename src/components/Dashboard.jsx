@@ -1,7 +1,10 @@
-import { Container } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import { Button, Container } from "@mui/material";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const MainHeader = styled.div`
   display: flex;
@@ -37,7 +40,7 @@ const Control = styled.div`
   padding: 1rem;
   gap: 1rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   background-color: white;
   border-radius: 4px;
   border: 1px solid grey;
@@ -55,41 +58,164 @@ const ControllButtons = styled.button`
   position: relative;
   text-align: center;
 
+  &:disabled {
+    background-color: grey;
+    cursor: none;
+  }
+
   &:hover {
     background-color: #0a46e4;
     border-color: #0a46e4;
   }
+  &:first-of-type {
+    margin-right: 10px;
+  }
 `;
-const Dashboard = () => {
+const Dashboard = (props) => {
+  const [domain, setDomain] = useState("");
+  const [password, setPassword] = useState("");
+  const [port, setPort] = useState("");
+  const [username, setUsername] = useState("");
+  const [os, setOs] = useState("");
+  const [ram, setRam] = useState("");
+  const [cpu, setCpu] = useState("");
+  const navitage = useNavigate();
+
+  const instance = axios.create({
+    withCredentials: true,
+    baseURL: props.host,
+  });
+  const handelStart = () => {
+    instance
+      .post("/api/container", {
+        command: "start",
+      })
+      .then((res) => {
+        setDomain(res.data.domain);
+        setPassword(res.data.password);
+        setPort(res.data.port);
+        setUsername(res.data.username);
+        setOs(res.data.os);
+        setRam(res.data.ram);
+        setCpu(res.data.cpu);
+      })
+      .catch((res) => {
+        console.log(res);
+        if (res.response.status === 500) {
+          return;
+        }
+        if (res.response.status === 403 || 401) {
+          navitage("/login");
+        }
+      });
+  };
+  const handelDelete = () => {
+    instance
+      .post("/api/container", {
+        command: "delete",
+      })
+      .then((res) => {
+        setDomain("");
+        setPassword("");
+        setPort("");
+        setUsername("");
+        setOs("");
+        setRam("");
+        setCpu("");
+      })
+      .catch((res) => {
+        console.log(res);
+        if (res.response.status === 500) {
+          return;
+        }
+        if (res.response.status === 403 || 401) {
+          navitage("/login");
+        }
+      });
+  };
+
+  const handelStats = () => {
+    instance
+      .get("/api/container/stats")
+      .then((res) => {
+        setOs(res.data.os);
+        setDomain(res.data.domain);
+        setRam(res.data.ram);
+        setCpu(res.data.cpu);
+        setPassword(res.data.password);
+        setPort(res.data.port);
+        setUsername(res.data.username);
+      })
+      .catch((res) => {
+        console.log(res);
+        if (res.response.status === 500) {
+          return;
+        }
+        if (res.response.status === 403 || 401) {
+          navitage("/login");
+        }
+      });
+  };
+
+  useEffect(() => {
+    handelStats();
+  });
+
+  if (domain !== "") {
+    setInterval(() => {
+      handelStats();
+    }, 60000);
+  }
+
   return (
     <div>
       <Container>
         <MainHeader>
           <MainHeading>Dashboard</MainHeading>
-          <Link to={"#"}>LOG OUT</Link>
+          <p>LOG OUT</p>
         </MainHeader>
         <Header>
           <HeaderSections>
             <p>Operating System</p>
-            <p>Ubuntu 22.04</p>
+            <p>{os === "" ? "N/A" : os}</p>
           </HeaderSections>
           <HeaderSections>
             <p>Host</p>
-            <p>host.helpinghands.tk</p>
+            <p>
+              {domain === "" ? "N/A" : domain}:{port === "" ? "" : port}
+            </p>
           </HeaderSections>
           <HeaderSections>
-            <p>Port</p>
-            <p>5000</p>
+            <p>CPU</p>
+            <p>{cpu === "" ? "N/A" : cpu}</p>
           </HeaderSections>
           <HeaderSections>
-            <p>Size</p>
-            <p>1 Core, 6 GB Memory</p>
+            <p>Ram</p>
+            <p>{ram === "" ? "N/A" : ram}</p>
           </HeaderSections>
         </Header>
 
         <Control>
-          <ControllButtons>Start</ControllButtons>
-          <ControllButtons>Stop</ControllButtons>
+          <div>
+            <ControllButtons onClick={handelStart}>Start</ControllButtons>
+            <ControllButtons onClick={handelDelete}>Stop</ControllButtons>
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {domain === "" ? "" : `ssh ${username}@${domain} -p ${port}`}
+            {domain === "" ? (
+              ""
+            ) : (
+              <Button>
+                <ContentCopyIcon
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `ssh ${username}@${domain} -p ${port}`
+                    );
+                  }}
+                />
+              </Button>
+            )}
+          </div>
         </Control>
       </Container>
     </div>
