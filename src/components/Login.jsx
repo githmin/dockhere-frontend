@@ -69,8 +69,8 @@ const Login = () => {
         <InnerWrapper>
           <Heading>LOGIN</Heading>
           <InputDiv>
-            <InputArea placeholder="Password"></InputArea>
             <InputArea placeholder="Username"></InputArea>
+            <InputArea placeholder="Password"></InputArea>
           </InputDiv>
           <UnderTextArea>
             <div style={{ display: "flex", alignItems: "center" }}>
