@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -69,6 +69,10 @@ const Login = (props) => {
   const instance = axios.create({
     withCredentials: true,
     baseURL: props.host,
+  });
+
+  useEffect(() => {
+    instance.get("/verify").then(() => navitage("/dashboard"));
   });
 
   const handelLogin = () => {
