@@ -66,10 +66,10 @@ const Signup = (props) => {
   const navitage = useNavigate();
 
   const instance = axios.create({
-    withCredentials: true,
     baseURL: props.host,
   });
   const handelSignup = () => {
+    console.log(props.host)
     instance
       .post("/api/auth/register", {
         username,

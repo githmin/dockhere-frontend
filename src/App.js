@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<Dashboard host={host} />} />
         <Route path="/login" element={<Login host={host} />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={<Signup host={host} />} />
         <Route path="/" element={<Login host={host} />} />
       </Routes>
     </>
