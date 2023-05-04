@@ -5,14 +5,14 @@ import Dashboard from "./components/Dashboard";
 import { useState } from "react";
 
 function App() {
-  const [host, setHost] = useState("http://localhost:4001");
+  const [host, setHost] = useState("https://host.helpinghands.tk");
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login host={host} />} />
+        <Route path="/dashboard" element={<Dashboard host={host} />} />
         <Route path="/login" element={<Login host={host} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard host={host} />} />
+        <Route path="/" element={<Login host={host} />} />
       </Routes>
     </>
   );

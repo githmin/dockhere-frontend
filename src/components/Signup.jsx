@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const MainWrapper = styled.div`
@@ -59,19 +60,43 @@ const LoginBtn = styled.button`
 `;
 // const MainWrapper = styled.div``;
 
-const Signup = () => {
+const Signup = (props) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navitage = useNavigate();
+
+  const instance = axios.create({
+    withCredentials: true,
+    baseURL: props.host,
+  });
+  const handelSignup = () => {
+    instance
+      .post("/api/auth/register", {
+        username,
+        password,
+      })
+      .then((res) => {
+        navitage("/login");
+      });
+  };
   return (
     <div>
       <MainWrapper>
         <InnerWrapper>
           <Heading>SIGN UP 🚀</Heading>
           <InputDiv>
-            <InputArea placeholder="Username"></InputArea>
-            <InputArea placeholder="Password"></InputArea>
+            <InputArea
+              placeholder="Username"
+              onChange={(e) => setUsername(e.target.value)}
+            ></InputArea>
+            <InputArea
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            ></InputArea>
             <UnderTextArea>
               By joining, you agree to our Terms of Service and Privacy Policy
             </UnderTextArea>
-            <LoginBtn>SIGN UP</LoginBtn>
+            <LoginBtn onClick={handelSignup}>SIGN UP</LoginBtn>
             <UnderTextArea>
               Made with 🖤 By
               <Link to={"https://github.com/githmin"}>
