@@ -177,12 +177,23 @@ const Dashboard = (props) => {
     handelStats();
   }, 60000);
 
+  const handelLogout = () => {
+    instance
+      .post("/api/auth/logout")
+      .then(() => {
+        navitage("/login");
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  };
+
   return (
     <div>
       <Container>
         <MainHeader>
           <MainHeading>Dashboard</MainHeading>
-          <p>LOG OUT</p>
+          <p onClick={handelLogout}>LOG OUT</p>
         </MainHeader>
         <Header>
           <HeaderSections>
