@@ -159,13 +159,12 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     handelStats();
-  });
+    // eslint-disable-next-line
+  }, []);
 
-  if (domain !== "") {
-    setInterval(() => {
-      handelStats();
-    }, 60000);
-  }
+  setInterval(() => {
+    handelStats();
+  }, 60000);
 
   return (
     <div>
