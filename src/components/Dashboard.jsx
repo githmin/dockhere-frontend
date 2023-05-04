@@ -28,10 +28,17 @@ const Header = styled.div`
   background-color: white;
   border-radius: 4px;
   border: 1px solid grey;
+
+  @media (max-width: 645px) {
+    flex-direction: column;
+  }
 `;
 
 const HeaderSections = styled.div`
   padding: 1rem;
+  @media (max-width: 645px) {
+    padding: 0rem 1rem;
+  }
 `;
 
 const Control = styled.div`
@@ -44,6 +51,10 @@ const Control = styled.div`
   background-color: white;
   border-radius: 4px;
   border: 1px solid grey;
+
+  @media (max-width: 645px) {
+    flex-direction: column;
+  }
 `;
 
 const ControllButtons = styled.button`
