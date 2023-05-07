@@ -168,16 +168,14 @@ const Dashboard = (props) => {
       });
   };
 
-
-  if( domain !== ""){
+  if (domain !== "") {
     setTimeout(() => {
       handelStats();
     }, 10000);
   }
   useEffect(() => {
-    handelStats(); 
-    // eslint-disable-next-line
-  }, []);
+    handelStats();
+  });
 
   // setInterval(() => {
   //   handelStats();
