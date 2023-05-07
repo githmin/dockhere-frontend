@@ -3,7 +3,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 const MainHeader = styled.div`
@@ -84,6 +83,7 @@ const ControllButtons = styled.button`
 `;
 const Dashboard = (props) => {
   const [domain, setDomain] = useState("");
+  // eslint-disable-next-line
   const [password, setPassword] = useState("");
   const [port, setPort] = useState("");
   const [username, setUsername] = useState("");
@@ -168,14 +168,20 @@ const Dashboard = (props) => {
       });
   };
 
+
+  if( domain !== ""){
+    setTimeout(() => {
+      handelStats();
+    }, 10000);
+  }
   useEffect(() => {
-    handelStats();
+    handelStats(); 
     // eslint-disable-next-line
   }, []);
 
-  setInterval(() => {
-    handelStats();
-  }, 60000);
+  // setInterval(() => {
+  //   handelStats();
+  // }, 60000);
 
   const handelLogout = () => {
     instance

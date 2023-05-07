@@ -11,6 +11,7 @@ import Dashboard from "./components/Dashboard";
 import { useState } from "react";
 
 function App() {
+  // eslint-disable-next-line
   const [host, setHost] = useState("https://host.helpinghands.tk");
   return (
     <>
