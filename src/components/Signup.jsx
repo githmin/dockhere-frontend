@@ -63,20 +63,23 @@ const LoginBtn = styled.button`
 const Signup = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
   const navitage = useNavigate();
 
   const instance = axios.create({
     baseURL: props.host,
   });
   const handelSignup = () => {
-    console.log(props.host)
+    console.log(props.host);
     instance
       .post("/api/auth/register", {
         username,
         password,
+        email,
       })
       .then((res) => {
-        navitage("/login");
+        navitage("/signup/success");
       });
   };
   return (
@@ -90,7 +93,12 @@ const Signup = (props) => {
               onChange={(e) => setUsername(e.target.value)}
             ></InputArea>
             <InputArea
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            ></InputArea>
+            <InputArea
               placeholder="Password"
+              type="password"
               onChange={(e) => setPassword(e.target.value)}
             ></InputArea>
             <UnderTextArea>
