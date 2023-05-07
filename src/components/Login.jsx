@@ -63,10 +63,11 @@ const LoginBtn = styled.button`
   }
 `;
 
-const NavUnderSignup = styled(Link)`
+const NavUnderSignIn = styled(Link)`
   text-align: center;
   text-decoration: none;
   margin-top: 1rem;
+  color: #403866;
 `;
 const Login = (props) => {
   const [username, setUsername] = useState("");
@@ -114,7 +115,7 @@ const Login = (props) => {
           </UnderTextArea> */}
           <LoginBtn onClick={handelLogin}>LOGIN</LoginBtn>
         </InnerWrapper>
-        <NavUnderSignup to={"/signup"}>Not Registered Yet?</NavUnderSignup>
+        <NavUnderSignIn to={"/signup"}>Not Registered Yet?</NavUnderSignIn>
       </MainWrapper>
     </div>
   );
