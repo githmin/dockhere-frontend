@@ -58,7 +58,10 @@ const LoginBtn = styled.button`
     background-color: #403866;
   }
 `;
-// const MainWrapper = styled.div``;
+const NavUnderSignup = styled(Link)`
+  text-align: center;
+  text-decoration: none;
+`;
 
 const Signup = (props) => {
   const [username, setUsername] = useState("");
@@ -105,6 +108,9 @@ const Signup = (props) => {
               By joining, you agree to our Terms of Service and Privacy Policy
             </UnderTextArea>
             <LoginBtn onClick={handelSignup}>SIGN UP</LoginBtn>
+            <NavUnderSignup to={"/login"}>
+              Already got an account? Login here!
+            </NavUnderSignup>
             <UnderTextArea>
               Made with 🖤 By
               <Link to={"https://github.com/githmin"}>
