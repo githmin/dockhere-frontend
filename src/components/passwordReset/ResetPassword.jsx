@@ -47,7 +47,7 @@ const UnderTextArea = styled.div`
   }
 `;
 const LoginBtn = styled.button`
-  /* margin-top: 1rem; */
+  margin-top: 1rem;
   width: 100%;
   height: 62px;
   font-size: 16px;
@@ -69,52 +69,34 @@ const NavUnderSignIn = styled(Link)`
   margin-top: 1rem;
   color: #403866;
 `;
-const Login = (props) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const ResetPassword = (props) => {
+  const [email, setEmail] = useState("");
   const navitage = useNavigate();
   const instance = axios.create({
     withCredentials: true,
     baseURL: props.host,
   });
 
-  useEffect(() => {
-    instance.get("/verify").then(() => navitage("/dashboard"));
-  });
-
-  const handelLogin = () => {
+  const handelReset = () => {
     instance
-      .post("/api/auth", {
-        username: username,
-        password: password,
+      .post("/api/auth/forgot-password", {
+        email,
       })
-      .then(() => navitage("/dashboard"))
+      .then(() => navitage("/forgot-password/requested"))
       .catch((e) => console.log(e));
   };
   return (
     <div>
       <MainWrapper>
         <InnerWrapper>
-          <Heading>LOGIN 💻</Heading>
+          <Heading>RESET PASSWORD</Heading>
           <InputDiv>
             <InputArea
-              placeholder="Username"
-              onChange={(e) => setUsername(e.target.value)}
-            ></InputArea>
-            <InputArea
-              placeholder="Password"
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
             ></InputArea>
           </InputDiv>
-          <UnderTextArea>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <InputArea type="checkbox" />
-              Remember Me
-            </div>
-            <Link to={"/forgot-password"}>Forgot?</Link>
-          </UnderTextArea>
-          <LoginBtn onClick={handelLogin}>LOGIN</LoginBtn>
+          <LoginBtn onClick={handelReset}>RESET</LoginBtn>
         </InnerWrapper>
         <NavUnderSignIn to={"/signup"}>Not Registered Yet?</NavUnderSignIn>
       </MainWrapper>
@@ -122,4 +104,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default ResetPassword;

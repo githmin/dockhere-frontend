@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const MainWrapper = styled.div`
@@ -36,18 +36,8 @@ const InputArea = styled.input`
   padding: 0 20px 0 38px;
   /* border: none; */
 `;
-const UnderTextArea = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  & > a {
-    text-decoration: none;
-    color: #403866;
-  }
-`;
 const LoginBtn = styled.button`
-  /* margin-top: 1rem; */
+  margin-top: 1rem;
   width: 100%;
   height: 62px;
   font-size: 16px;
@@ -63,63 +53,63 @@ const LoginBtn = styled.button`
   }
 `;
 
-const NavUnderSignIn = styled(Link)`
+const ErrorArea = styled.div`
   text-align: center;
-  text-decoration: none;
   margin-top: 1rem;
-  color: #403866;
+  color: red;
 `;
-const Login = (props) => {
-  const [username, setUsername] = useState("");
+const ResetWithToken = (props) => {
+  const { token } = useParams();
   const [password, setPassword] = useState("");
+  const [confPass, setConfPass] = useState("");
+  const [error, setError] = useState("");
   const navitage = useNavigate();
   const instance = axios.create({
     withCredentials: true,
     baseURL: props.host,
   });
 
-  useEffect(() => {
-    instance.get("/verify").then(() => navitage("/dashboard"));
-  });
-
-  const handelLogin = () => {
+  const handelSubmit = () => {
+    if (password !== confPass) {
+      setError("Passwords do not match");
+      return;
+    }
     instance
-      .post("/api/auth", {
-        username: username,
-        password: password,
+      .post("/api/auth/reset-password", {
+        password,
+        token,
       })
-      .then(() => navitage("/dashboard"))
+      .then(() => navitage("/reset-password/success"))
       .catch((e) => console.log(e));
   };
+
   return (
     <div>
       <MainWrapper>
         <InnerWrapper>
-          <Heading>LOGIN 💻</Heading>
+          <Heading>RESET PASSWORD</Heading>
           <InputDiv>
             <InputArea
-              placeholder="Username"
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Password"
+              onChange={(e) => {
+                setError("");
+                setPassword(e.target.value);
+              }}
             ></InputArea>
             <InputArea
-              placeholder="Password"
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Re-enter Password"
+              onChange={(e) => {
+                setError("");
+                setConfPass(e.target.value);
+              }}
             ></InputArea>
           </InputDiv>
-          <UnderTextArea>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <InputArea type="checkbox" />
-              Remember Me
-            </div>
-            <Link to={"/forgot-password"}>Forgot?</Link>
-          </UnderTextArea>
-          <LoginBtn onClick={handelLogin}>LOGIN</LoginBtn>
+          <LoginBtn onClick={handelSubmit}>RESET</LoginBtn>
         </InnerWrapper>
-        <NavUnderSignIn to={"/signup"}>Not Registered Yet?</NavUnderSignIn>
+        <ErrorArea>{error}</ErrorArea>
       </MainWrapper>
     </div>
   );
 };
 
-export default Login;
+export default ResetWithToken;
