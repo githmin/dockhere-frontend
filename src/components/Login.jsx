@@ -88,7 +88,8 @@ const Login = (props) => {
         username: username,
         password: password,
       })
-      .then(() => navitage("/dashboard"));
+      .then(() => navitage("/dashboard"))
+      .catch((e) => console.log(e));
   };
   return (
     <div>
