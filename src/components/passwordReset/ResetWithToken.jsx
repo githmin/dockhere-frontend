@@ -75,7 +75,7 @@ const ResetWithToken = (props) => {
       return;
     }
     instance
-      .post("/api/auth/reset-password", {
+      .post(`${props.host}/api/auth/reset-password`, {
         password,
         token,
       })

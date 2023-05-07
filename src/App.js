@@ -28,7 +28,7 @@ function App() {
           path="/forgot-password/requested"
           element={<ResetReqSuccess />}
         />
-        <Route path="/reset-password/:token" element={<ResetWithToken />} />
+        <Route path="/reset-password/:token" element={<ResetWithToken host={host}/>} />
         <Route
           path="/reset-password/success"
           element={<ResetWTokenSuccess />}
