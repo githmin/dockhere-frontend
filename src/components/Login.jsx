@@ -47,6 +47,7 @@ const UnderTextArea = styled.div`
   }
 `;
 const LoginBtn = styled.button`
+  margin-top: 1rem;
   width: 100%;
   height: 62px;
   font-size: 16px;
@@ -62,6 +63,11 @@ const LoginBtn = styled.button`
   }
 `;
 
+const NavUnderSignup = styled(Link)`
+  text-align: center;
+  text-decoration: none;
+  margin-top: 1rem;
+`;
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -87,7 +93,7 @@ const Login = (props) => {
     <div>
       <MainWrapper>
         <InnerWrapper>
-          <Heading>LOGIN</Heading>
+          <Heading>LOGIN 💻</Heading>
           <InputDiv>
             <InputArea
               placeholder="Username"
@@ -95,18 +101,20 @@ const Login = (props) => {
             ></InputArea>
             <InputArea
               placeholder="Password"
+              type="password"
               onChange={(e) => setPassword(e.target.value)}
             ></InputArea>
           </InputDiv>
-          <UnderTextArea>
+          {/* <UnderTextArea>
             <div style={{ display: "flex", alignItems: "center" }}>
               <InputArea type="checkbox" />
               Remember Me
             </div>
             <Link to={"#"}>Forgot?</Link>
-          </UnderTextArea>
+          </UnderTextArea> */}
           <LoginBtn onClick={handelLogin}>LOGIN</LoginBtn>
         </InnerWrapper>
+        <NavUnderSignup to={"/signup"}>Not Registered Yet?</NavUnderSignup>
       </MainWrapper>
     </div>
   );
